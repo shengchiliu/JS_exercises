@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+</head>
+<body>
+    <script>
+        var canvas = document.createElement("canvas");
+        canvas.width = 300;
+        canvas.height = 300;
+        var ctx = canvas.getContext("2d");
+
+        ctx.fillStyle = "rgb(255,0,0)";
+        ctx.fillRect (10, 10, 50, 50);
+
+        ctx.fillStyle = "rgba(0, 0, 255, 0.5)";
+        ctx.fillRect (30, 30, 50, 50);
+
+        document.body.appendChild(canvas);    
+    </script>
+</body>
+</html>
