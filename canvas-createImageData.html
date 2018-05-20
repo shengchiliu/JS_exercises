@@ -23,6 +23,18 @@
         // console.log(imgData[0])
 
 
+        // fillStyle & fillRect
+        var canvas = document.createElement("canvas");
+        canvas.width = 300;
+        canvas.height = 300;
+        var ctx = canvas.getContext("2d");
+        ctx.fillStyle = "rgb(255,0,0)";
+        ctx.fillRect (10, 10, 55, 50);
+        ctx.fillStyle = "rgba(0, 0, 255, 0.5)";
+        ctx.fillRect (30, 30, 55, 50);
+        document.body.appendChild(canvas);
+
+
         // JS: for (m=0; m<5; m++) {}; Python: for m in range(5):
         // JS: console.log(arr[0][0]); Python: arr[0,0]
     </script>
