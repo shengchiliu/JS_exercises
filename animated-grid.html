@@ -1,0 +1,203 @@
+<html>
+<head>
+    <script src="js/math.js" type="text/javascript"></script>
+    <style>
+        #main {
+            text-align: center;
+        }
+    </style>
+    
+</head>
+<body style=" background: lightblue;">
+    <div id="main">
+        <canvas id="myCanvas" width="420px" height="420px" style="background: #fff; magrin:20px;"></canvas>
+    </div>
+    
+    <script type="text/javascript" language="javascript">
+
+        // Grid
+        var bw = 400;
+        var bh = 400;
+        var p = 10;
+        var cw = bw + (p*2) + 1;
+        var ch = bh + (p*2) + 1;
+
+        var c = document.getElementById("myCanvas");
+        var ctx = c.getContext("2d");
+        
+        function drawBoard(){
+            for (var x = 0; x <= bw; x += 40) {
+                ctx.moveTo(0.5 + x + p, p);
+                ctx.lineTo(0.5 + x + p, bh + p);
+            }
+
+            for (var x = 0; x <= bh; x += 40) {
+                ctx.moveTo(p, 0.5 + x + p);
+                ctx.lineTo(bw + p, 0.5 + x + p);
+            }
+
+            ctx.strokeStyle = "black";
+            ctx.stroke();
+        }
+        
+        drawBoard();
+        
+
+        // Q-Learning
+        let h0 = 5, w0 = 5;
+
+        let O = math.matrix(math.ones([h0+2, w0+2]));
+        O._data[h0][w0] = -99;
+        let F = math.matrix(math.zeros([h0+2, w0+2]));
+        let A = math.matrix(math.zeros([h0+2, w0+2]));
+        let B = math.matrix(math.zeros([h0+2, w0+2]));
+        let C = math.matrix(math.zeros([1, h0*w0]));
+        let R = math.matrix(math.zeros([h0*w0, h0*w0]));
+
+        let m, n, m1, n1;
+        for (m = 0; m < h0; m++) {
+            for (n = 0; n < w0; n++) {
+                F = math.matrix(math.zeros([h0+2, w0+2]));
+                m1 = m + 1; n1 = n + 1;
+
+                F._data[m1-1][n1-1] = 1;
+                F._data[m1-1][n1] = 2;
+                F._data[m1-1][n1+1] = 2;
+                F._data[m1][n1-1] = 1;
+                F._data[m1][n1+1] = 3;
+                F._data[m1+1][n1-1] = 1;
+                F._data[m1+1][n1] = 3;
+                F._data[m1+1][n1+1] = 4;
+
+                A = math.subtract(F, O);
+                B = A.subset(math.index(math.range(1,h0+1), math.range(1,w0+1)));   // math.js tyer
+                C = math.squeeze(math.reshape(B, [1, h0*w0])._data);                // array type   
+                replace(C, "equal", 99, -1);
+                replace(C, "larger", 100, 100);
+                R._data[m*w0+n] = C;
+            }
+        }
+
+        function replace(array, relationship, value_old, value_new) {
+
+            switch (relationship) {
+                case "larger":
+                    var values = array.filter(function (element) {
+                        return element > value_old;
+                    });
+                    break;
+                case "equal":
+                    var values = array.filter(function (element) {
+                        return element == value_old;
+                    });
+                    break;
+                case "smaller":
+                    var values = array.filter(function (element) {
+                        return element < value_old;
+                    });
+                    break;
+            }
+
+            for (let i = 0; i < values.length; i++) {
+                array[array.indexOf(values[i])] = value_new;
+            }
+
+            return array
+        }
+
+        // console.log(R._data)
+
+
+        // Training
+        let h, w;
+        [h, w] = R._size;
+
+        let Q = math.matrix(math.zeros([h, w]));
+        const gamma = 0.7;
+
+        let i, iter = 1000;
+        let u, v, u1, idx_u1;
+        for (i = 0; i < iter; i++) {
+            u =  math.round(math.random(h-1));
+            v =  math.round(math.random(w-1));
+
+            if (u == h-1) {
+                u1 = 0;
+            } else {
+                u1 = u + 1;
+            }
+
+            idx_u1 = Q._data[u1].findIndex(function (element) {
+                // return element == Math.max.apply(Math, Q._data[u1]);
+                return element == math.max(Q._data[u1]);
+            });
+            Q._data[u][v] = R._data[u][v] + gamma * Q._data[u1][idx_u1]
+        }
+
+        // console.log(math.floor(math.multiply(math.divide(Q, math.max(Q)), 100)))
+
+
+        // Testing
+        let agent = 0;
+        let idx = agent;
+        let path = [agent];
+        let indexes
+        let px = py = 0;
+        
+        ctx.fillStyle = "#0000FF";
+        ctx.fillRect(10+0*40+1, 10+0*40+1, 39, 39);
+
+        ctx.fillStyle = "#FF0000";
+        ctx.fillRect(10+(h0-1)*40+1, 10+(w0-1)*40+1, 39, 39);
+
+        setInterval(function () {
+
+            // while (agent != h -1) {
+                ctx.fillStyle = "#FFFFFF";
+                ctx.fillRect(10+py*40+1, 10+px*40+1, 39, 39);
+
+                ctx.fillStyle = "#00FF00";
+                ctx.fillRect(10+0*40+1, 10+0*40+1, 39, 39);
+
+                ctx.fillStyle = "#FF0000";
+                ctx.fillRect(10+(h0-1)*40+1, 10+(w0-1)*40+1, 39, 39);
+
+                indexes = getAllIndexes(Q._data[agent], math.max(Q._data[agent]));
+                idx = indexes[math.round(math.random(indexes.length-1))];
+                agent = idx;
+                path.push(idx)
+
+                px =  Math.floor(agent / w0)
+                py =  agent % h0
+                console.log(agent, px, py)
+
+                ctx.fillStyle = "#FFFF00";
+                ctx.fillRect(10+py*40+1, 10+px*40+1, 39, 39);
+
+                if (agent == h-1) {
+                    agent = 0;
+                }
+
+            // }
+
+        }, 1000);
+        // console.log(path)
+
+        function getAllIndexes(arr, val) {
+            var indexes = [], i = -1;
+            while ((i = arr.indexOf(val, i+1)) != -1){
+                indexes.push(i);
+            }
+            return indexes;
+        }
+
+        // console.log(math.reshape(math.range(0, w0*h0), [h0, w0]));
+        
+
+        // setTimeout(function() {
+        // //your code to be executed after 1 second
+        // }, delayInMilliseconds);
+    </script>
+
+</body>
+</html>
