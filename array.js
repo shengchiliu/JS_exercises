@@ -39,5 +39,18 @@ console.log(Q.every(allZeros))
 Math.floor(Math.random() * arr.length)
 
 
-//
+// Find indexes of all occurrences of elements
+let indices = arr.reduce(function(a, e, i) {
+    if (e === 2)
+        a.push(i);
+    return a;
+}, []);
+
+// Method 2
+let indices = arr.map((e, i) => e === 2 ? i : '').filter(String)
+
+// Method 3
+let indices = arr.map((e, i) => e === Math.max(...arr) ? i : '').filter(String)
+
+console.log(indices)
 
