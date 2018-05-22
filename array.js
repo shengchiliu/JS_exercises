@@ -16,5 +16,5 @@ console.log(arr)
 R = Q.slice(0);
 
 // Last Element of Array
-R[R.length-1] = 1;
+R[R.length-1] = 1;	//R.pop();
 
