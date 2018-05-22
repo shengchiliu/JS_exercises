@@ -33,3 +33,11 @@ function allZeros(element) {
 }
 
 console.log(Q.every(allZeros))
+
+
+// Random Choose
+Math.floor(Math.random() * arr.length)
+
+
+//
+
