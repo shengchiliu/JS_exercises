@@ -39,6 +39,10 @@ console.log(Q.every(allZeros))
 Math.floor(Math.random() * arr.length)
 
 
+// Find index of maximum
+arr.indexOf(Math.max(...arr))
+
+
 // Find indexes of all occurrences of elements
 let indices = arr.reduce(function(a, e, i) {
     if (e === 2)
