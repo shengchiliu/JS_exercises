@@ -18,3 +18,11 @@ R = Q.slice(0);
 // Last Element of Array
 R[R.length-1] = 1;	//R.pop();
 
+// Create 2D Array
+(Q = []).length = stage;
+for (i = 0; i < stage; i++) {
+    Q[i] = [];
+    Q[i].length = action;
+    Q[i].fill(0);
+}
+
