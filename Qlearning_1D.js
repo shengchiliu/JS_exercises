@@ -8,7 +8,7 @@ const action = 2;
 const alpha = 0.1;
 const gamma = 0.9;
 const epsilon = 0.9;
-const eposide = 1500;
+const eposide = 15;
 let s = 0, a = 0, r = 0;
 let q_target, q_predict;
 let terminal;

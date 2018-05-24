@@ -65,5 +65,13 @@ let indices = arr.map((e, i) => e === 2 ? i : '').filter(String)
 // Method 3
 let indices = arr.map((e, i) => e === Math.max(...arr) ? i : '').filter(String)
 
+// Method 4
+function zeros(dimensions) {
+    var array = [];
+    for (var i = 0; i < dimensions[0]; ++i) {
+    	array.push(dimensions.length == 1 ? 0 : zeros(dimensions.slice(1)));
+    }
+    return array;
+}
 console.log(indices)
 
