@@ -79,16 +79,17 @@ console.log(indices)
 // Find Values and Replace those 
 let arr = [-3, -10, 18, 20];
 
-function findValues(element) {
+function ReLu(element) {
     if (element < 0) {
         element = 0;
     }
     return element
 }
-console.log(arr.map(findValues));
+console.log(arr.map(ReLu));
+
 
 // Find Values and Filter those 
-console.log(arr.filter(findValues));
+console.log(arr.filter(ReLu));
 
 let val = arr.filter(element => element > 10 );
 console.log(val)
