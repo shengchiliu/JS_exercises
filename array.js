@@ -76,7 +76,7 @@ function zeros(dimensions) {
 console.log(indices)
 
 
-// Find Values and Replace those 
+// Find Values and Replace those in 1D Array
 let arr = [-3, -10, 18, 20];
 
 function ReLu(element) {
@@ -85,11 +85,28 @@ function ReLu(element) {
     }
     return element
 }
-console.log(arr.map(ReLu));
+console.log(arr.map(ReLu));     // [0, 0, 18, 20]
 
 
 // Find Values and Filter those 
 console.log(arr.filter(ReLu));
 
 let val = arr.filter(element => element > 10 );
-console.log(val)
+console.log(val)                // [18, 20]
+
+
+// Find Values and Replace those in 2D Array
+let arr = [[-3, 1], -10, 18, 20];
+
+function ReLu(element) {
+    if (element.length > 1) {
+        element = element.map(ReLu)
+    }
+    
+    if (element < 0) {
+        element = 0;
+    }
+    return element
+}
+
+console.log(arr.map(ReLu));     // [[0, 1], 0, 18, 20 ]
