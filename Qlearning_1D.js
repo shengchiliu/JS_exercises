@@ -76,7 +76,7 @@ for (i = 0; i < eposide; i++) {
         // Stage
         switch (a) {
             case 0:
-                if (s == 0) {
+                if (s-1 < 0) {
                     s = 0;
                 } else {
                     s -= 1;
@@ -84,7 +84,7 @@ for (i = 0; i < eposide; i++) {
                 r = 0
                 break;
             case 1:
-                if (s == stage-2) {
+                if (s+1 == stage-1) {
                     s += 1;
                     r = 1;
                 } else {
