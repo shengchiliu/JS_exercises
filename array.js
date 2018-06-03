@@ -110,3 +110,41 @@ function ReLu(element) {
 }
 
 console.log(arr.map(ReLu));     // [[0, 1], 0, 18, 20 ]
+
+
+let makeArray = function(n, fill) {
+    let i, a = [];
+    for (i = 0; i < n; i++) {
+        a.push(fill);
+    }
+    return a;
+};
+
+let makeMatrix = function(I, J, fill) {
+    let i, m = [];
+    for (i = 0; i < I; i++) {
+        m.push(makeArray(J, fill));
+    }
+    return m;
+};
+
+let rand = function(a, b) {
+    return (b - a)*Math.random() + a;
+};
+
+let numbersToStr = function(array, precision) {
+    let rzStr = "";
+    for (let i = 0; i < array.length; i++) {
+        if (array[i] >= 0)
+            rzStr += " " + array[i].toFixed(precision) + " ";
+        else
+            rzStr += array[i].toFixed(precision) + " ";
+    }
+    return rzStr;
+}
+
+// console.log(makeMatrix(3, 2, 0))
+// console.log(rand(0, 7))
+// console.log(numbersToStr([1.003, 1.007], 2))
+// console.log([1.003, 1.007])
+
