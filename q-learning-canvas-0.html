@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+    <style>
+        body {
+            background-color: #ffe4e1
+        }
+
+        #main {
+            text-align: center;
+        }
+    </style>
+</head>
+
+<body>
+    <div id="main">
+        <canvas id="myCanvas" width="420px" height="420px" style="background: #fff; magrin:20px;"></canvas>
+        <p>Iteration:
+            <span id="iteration"></span>
+        </p>
+    </div>
+
+    <script>
+        // Canvas Grid
+        let c = document.getElementById("myCanvas");
+        let ctx = c.getContext("2d");
+
+        let border = 10;
+        let pixel = 80;
+        let w_canvas = c.width - 2 * border;
+        let h_canvas = c.height - 2 * border;
+        let x, y
+
+        (function () {
+            for (x = 0; x <= w_canvas; x += pixel) {
+                // ctx.moveTo(x0, y0); ctx.lineTo(x1, y1); (x0, y0) to (x1, y1)
+                ctx.moveTo(border + 0.5 + x, border);
+                ctx.lineTo(border + 0.5 + x, border + h_canvas);
+            }
+
+            for (y = 0; y <= h_canvas; y += pixel) {
+                ctx.moveTo(border, border + 0.5 + y);               // from: (10,  10.5), (10,  50.5), ...
+                ctx.lineTo(border + w_canvas, border + 0.5 + y);    // to:   (410, 10.5), (410, 50.5), ...
+            }
+
+            ctx.strokeStyle = "black"; // put color
+            ctx.stroke(); // border lines
+        })();
+
+
+        // Main Loop
+        let i = 0;
+        let x_start = y_start = 0;
+        let x_terminal = y_terminal = 4;
+        let x_agent, y_agent;
+        let w = w_canvas / pixel;
+        let h = h_canvas / pixel;
+
+        setInterval(function () {
+            // Start Spot
+            ctx.fillStyle = "#0000FF";
+            ctx.fillRect(x_start*pixel+border+1, y_start*pixel+border+1, pixel-1, pixel-1);
+            
+            // Terminal Spot
+            ctx.fillStyle = "#FF0000";
+            ctx.fillRect(x_terminal*pixel+border+1, y_terminal*pixel+border+1, pixel-1, pixel-1);
+            
+            // Agent Spot
+            agent = qlearning(stage_last);
+
+            x_agent = Math.floor(agent / w);
+            y_agent = agent % w;
+
+            ctx.fillStyle = "#FFFF00";
+            ctx.fillRect(x_agent*pixel+border+1, y_agent*pixel+border+1, pixel-1, pixel-1);
+
+            
+            document.getElementById("iteration").innerText = i;
+            i++
+        }, 1000);
+
+
+    </script>
+</body>
+
+</html>
