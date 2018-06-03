@@ -21,7 +21,7 @@ a = [];
 b = math.subset(a, math.index(2, [0,1,2]), [1, 2, 3]);
 
 
-// --------------------------
+// Subset
 a = math.random([2,3,3,2])
 b = []
 b[0] = math.subset(a[0], math.index([0,1,2], 0, [0,1]), [[[0,0]],[[0,0]],[[0,0]]]);
@@ -31,6 +31,15 @@ a = math.random([2,3,3,2])
 b = math.random([2,5,5,2])
 c = math.subset(b, math.index([0,1], [1,2,3], [0,1,2], [0,1]), a);
 
-// --------------------------
+
+// Size
 a = math.ones([3,3])
 math.size(a)
+
+
+// Range
+console.log(math.range(2, 6));        // [2, 3, 4, 5]
+console.log(math.range(2, -3, -1));   // [2, 1, 0, -1, -2]
+console.log(math.range('2:1:6'));     // [2, 3, 4, 5]
+console.log(math.range(2, 6, true));  // [2, 3, 4, 5, 6]
+
